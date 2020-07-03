@@ -5,7 +5,7 @@ const readNotes = function (title) {
         const notes = JSON.parse(fs.readFileSync('./notes.json'));
         notes.forEach(e => {
             if (e.title === title) {
-                console.log(`Title: ${e.title}, Content: ${e.content}`);
+                return `Title: ${e.title}, Content: ${e.content}`;
             }
         });
     } catch (e) {
@@ -15,14 +15,29 @@ const readNotes = function (title) {
 
 const addNotes = function (title, content) {
     try {
-        const notes = loadNotes();
+        let notes = loadNotes();
         notes.push({
             title: title,
             content: content
         });
         fs.writeFileSync('./notes.json', JSON.stringify(notes));
+        return true;
     } catch (e) {
-        console.log(e);
+        return false;
+    }
+}
+
+const removeNotes = function (title) {
+    try {
+        let notes = loadNotes();
+        notes.forEach(e => {
+            if (e.title === title) {
+                notes.delete(e);
+            }
+        });
+        return true;
+    } catch (e) {
+        return false;
     }
 }
 
@@ -33,7 +48,9 @@ const loadNotes = function () {
         return [];
     }
 }
+
 module.exports = {
     addNotes: addNotes,
-    readNotes: readNotes
+    readNotes: readNotes,
+    removeNotes: removeNotes
 }
