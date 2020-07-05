@@ -20,8 +20,11 @@ yargs.command({
     }
   },
   handler: (argv) => {
-    console.log(chalk.green(`Your note ${argv.title} has been added successfully`));
-    addNotes(argv.title, argv.content);
+    if (addNotes(argv.title, argv.content)) { 
+      console.log(chalk.green(`Your note ${argv.title} has been added successfully`));
+    } else { 
+      console.log(chalk.red.bold('Unable to add your note'));
+    }
   }
 });
 
@@ -30,13 +33,17 @@ yargs.command({
   description: 'Remove a note from the notes file',
   builder: {
     title: {
-      description: 'title of the note to be removed',
+      description: 'Title of the note to be removed',
       demandOption: true,
       type: 'string'
     }
   },
   handler: (argv) => {
-    
+    if (removeNotes(argv.title)){ 
+      console.log(chalk.green.bold('Your note has been removed successfully.'));
+    } else { 
+      console.log(chalk.red.bold('Unable to remove the note'));
+    }
   }
 });
 
@@ -58,7 +65,7 @@ yargs.command({
     }
   },
   handler: (argv) => {
-    readNotes(argv.title);
+    console.log(chalk.green.bold(readNotes(argv.title)));
   }
 });
 
